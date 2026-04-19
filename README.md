@@ -23,10 +23,18 @@
 
 ---
 
+```markdown
 ## 🚀 Live Demo
 
-> **[mastervault.netlify.app](https://mastervault.netlify.app)**
+**[master-vault-test.netlify.app](https://master-vault-test.netlify.app)**
 
+| | |
+|---|---|
+| 🔑 Master Password | `testpassword` |
+| 💀 Panic Password | `panictest123` |
+
+> ⚠️ This is a shared demo vault. Do not store real passwords here.
+```
 ---
 
 ## 🛠️ Setup Guide
