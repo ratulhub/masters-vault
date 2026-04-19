@@ -192,4 +192,4 @@ If this project helped you, please consider:
 
 ---
 
-<p align="center">Built with ❤️ by <a href="https://github.com/ratul2005">ratul2005</a></p>
+<p align="center">Built with ❤️ by <a href="https://github.com/ratulhub">ratulhub</a></p>
