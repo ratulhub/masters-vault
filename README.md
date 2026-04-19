@@ -125,17 +125,15 @@ DROP POLICY IF EXISTS "Enable insert for all users" ON public.vault_items;
 DROP POLICY IF EXISTS "Enable update for all users" ON public.vault_items;
 DROP POLICY IF EXISTS "Enable delete for all users" ON public.vault_items;
 DROP TABLE IF EXISTS public.vault_items;
-\```
+```
 
 **Step 2 — Re-run** `supabase_setup.sql` to recreate the empty table.
 
-**Step 3 — Clear localStorage** in your browser:
-> Open DevTools (`F12`) → Application → Local Storage → select your site → click **Clear All**.
+**Step 3 — Clear localStorage** in your browser by opening DevTools (`F12`) → Application → Local Storage → select your site → Click **Clear All**.
 
 **Step 4 —** Reload the app. It will say **"Set Master Password"** again — you're starting fresh.
 
 > ⚠️ This permanently destroys all previously stored vault data. There is no recovery.
-```
 
 ## 🗂️ Project Structure
 
