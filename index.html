@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master's Vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="dark" data-theme="dark">
+  <div id="app">
+    <!-- LOCK SCREEN -->
+    <div id="lock-screen" class="screen active">
+      <div class="lock-container">
+        <div class="lock-icon">
+          <i data-lucide="shield-check"></i>
+        </div>
+        <h1>Master's Vault</h1>
+        <p class="subtitle">Secure. Private. Yours.</p>
+        <form id="unlock-form">
+          <div class="input-group">
+            <i data-lucide="key" class="input-icon"></i>
+            <input type="password" id="master-password" placeholder="Enter Master Password..." required autocomplete="off">
+            <button type="button" class="btn-icon" id="toggle-master-pw">
+              <i data-lucide="eye"></i>
+            </button>
+          </div>
+          <button type="submit" class="btn-primary" id="btn-unlock">
+            <span class="btn-text">Unlock Vault</span>
+            <i data-lucide="unlock" class="btn-icon-right"></i>
+          </button>
+          <div id="unlock-error" class="error-msg"></div>
+          <p class="warning-text">
+            <i data-lucide="alert-triangle"></i>
+            If you forget your master password, your data is permanently lost.
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="dashboard-screen" class="screen">
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <i data-lucide="shield"></i>
+          <h2>Vault</h2>
+        </div>
+        <ul class="sidebar-nav">
+          <li class="active" data-filter="all"><i data-lucide="layout-grid"></i> All Items</li>
+          <li data-filter="login"><i data-lucide="log-in"></i> Logins</li>
+          <li data-filter="note"><i data-lucide="file-text"></i> Secure Notes</li>
+          <li data-filter="crypto"><i data-lucide="bitcoin"></i> Crypto Wallets</li>
+          <li data-filter="card"><i data-lucide="credit-card"></i> Cards & IDs</li>
+        </ul>
+        <div class="sidebar-footer">
+          <button id="btn-settings" class="btn-secondary" style="margin-bottom: 8px;">
+            <i data-lucide="settings"></i> Settings
+          </button>
+          <button id="btn-lock" class="btn-secondary">
+            <i data-lucide="lock"></i> Lock Vault
+          </button>
+        </div>
+      </nav>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="search-bar">
+            <i data-lucide="search"></i>
+            <input type="text" id="search-input" placeholder="Search your vault... (Ctrl+K)">
+          </div>
+          <div class="topbar-actions">
+            <button id="btn-add-item" class="btn-primary">
+              <i data-lucide="plus"></i> Add Item
+            </button>
+          </div>
+        </header>
+
+        <div class="vault-stats">
+          <div class="stat-card">
+            <div class="stat-title">Total Items</div>
+            <div class="stat-value" id="stat-total">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Weak Passwords</div>
+            <div class="stat-value text-warning" id="stat-weak">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Security Score</div>
+            <div class="stat-value text-success" id="stat-score">100%</div>
+          </div>
+        </div>
+
+        <div class="vault-items-container" id="vault-items">
+          <!-- Items will be injected here -->
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT MODAL -->
+  <div id="item-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Add Item</h2>
+        <button class="btn-icon" id="btn-close-modal"><i data-lucide="x"></i></button>
+      </div>
+      <form id="item-form">
+        <input type="hidden" id="item-id">
+        <div class="form-group">
+          <label>Type</label>
+          <select id="item-type">
+            <option value="login">Login</option>
+            <option value="note">Secure Note</option>
+            <option value="crypto">Crypto Wallet</option>
+            <option value="card">Card / ID</option>
+          </select>
+        </div>
+        
+        <!-- Dynamic fields container -->
+        <div id="dynamic-fields"></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="btn-cancel-modal">Cancel</button>
+          <button type="submit" class="btn-primary">Save to Vault</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Vault Settings</h2>
+        <button class="btn-icon" id="btn-close-settings"><i data-lucide="x"></i></button>
+      </div>
+      <div class="settings-section">
+        <h3>Change Master Password</h3>
+        <p class="settings-desc">Update your encryption key. This will re-encrypt your entire vault remotely.</p>
+        <div class="form-group"><input type="password" id="set-old-pw" placeholder="Current Password"></div>
+        <div class="form-group"><input type="password" id="set-new-pw" placeholder="New Password"></div>
+        <button id="btn-do-change-pw" class="btn-primary btn-sm">Change Password</button>
+      </div>
+      <hr class="settings-divider">
+      <div class="settings-section">
+        <h3 class="text-warning">Panic Mode</h3>
+        <p class="settings-desc">If coerced into unlocking the vault, enter the Panic Password on the lock screen. It will irreversibly delete your real vault from Supabase and open an empty dummy vault.</p>
+        <div class="form-group"><input type="password" id="set-panic-pw" placeholder="Create Panic Password..."></div>
+        <button id="btn-set-panic" class="btn-secondary btn-sm">Enable Panic Mode</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASSWORD GENERATOR POPUP -->
+  <div id="generator-popup" class="generator-popup hidden">
+    <div class="strength-meter-container">
+      <div id="pw-strength-bar" class="strength-bar"></div>
+    </div>
+    <div class="generator-controls">
+      <label>Length: <span id="gen-length-val">16</span></label>
+      <input type="range" id="gen-length" min="8" max="64" value="16">
+      <button type="button" id="btn-generate-pw" class="btn-secondary btn-sm">Regenerate</button>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/argon2-browser@1.18.0/dist/argon2-bundled.min.js"></script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
