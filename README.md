@@ -25,7 +25,7 @@
 
 ## 🚀 Live Demo
 
-> **[mastervault.netlify.app](https://mastervault.netlify.app)** ← replace with your actual link
+> **[mastervault.netlify.app](https://mastervault.netlify.app)**
 
 ---
 
