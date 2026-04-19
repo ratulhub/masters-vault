@@ -84,6 +84,7 @@
 
 ---
 
+
 ### Step 5 — Deploy to Netlify (Free)
 
 #### Option A — Drag & Drop (Easiest, no Git needed)
@@ -112,6 +113,29 @@
 4. ⚠️ **Write this password down somewhere safe. If you forget it, your data is permanently unrecoverable.**
 
 ---
+## 🔄 Reset Vault (Start From Zero)
+
+If you forget your master password, your encrypted data is permanently unrecoverable. However, you can wipe everything and start fresh.
+
+**Step 1 — Delete the database table** by running this in your Supabase SQL Editor:
+
+```sql
+DROP POLICY IF EXISTS "Enable read access for all users" ON public.vault_items;
+DROP POLICY IF EXISTS "Enable insert for all users" ON public.vault_items;
+DROP POLICY IF EXISTS "Enable update for all users" ON public.vault_items;
+DROP POLICY IF EXISTS "Enable delete for all users" ON public.vault_items;
+DROP TABLE IF EXISTS public.vault_items;
+\```
+
+**Step 2 — Re-run** `supabase_setup.sql` to recreate the empty table.
+
+**Step 3 — Clear localStorage** in your browser:
+> Open DevTools (`F12`) → Application → Local Storage → select your site → click **Clear All**.
+
+**Step 4 —** Reload the app. It will say **"Set Master Password"** again — you're starting fresh.
+
+> ⚠️ This permanently destroys all previously stored vault data. There is no recovery.
+```
 
 ## 🗂️ Project Structure
 
